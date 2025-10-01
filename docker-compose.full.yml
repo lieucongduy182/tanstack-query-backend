@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tanstack-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: tanstack_tutorial
+      MYSQL_USER: tanstack_user
+      MYSQL_PASSWORD: password@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - tanstack-network
+
+  backend:
+    build:
+      context: ./tanstack-query-backend
+      dockerfile: Dockerfile
+    container_name: tanstack-backend
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: tanstack_user
+      DB_PASSWORD: password@123
+      DB_NAME: tanstack_tutorial
+      PORT: 3001
+      CORS_ORIGIN: 'http://localhost:3000'
+    ports:
+      - "3001:3001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - tanstack-network
+
+  frontend:
+    build:
+      context: ./next-tanstack-tutorial
+      dockerfile: Dockerfile
+    container_name: tanstack-frontend
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: 'http://localhost:3001/api'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - tanstack-network
+
+volumes:
+  mysql_data:
+
+networks:
+  tanstack-network:
+    driver: bridge
