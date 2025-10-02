@@ -33,10 +33,10 @@ services:
       DB_USERNAME: tanstack_user
       DB_PASSWORD: password@123
       DB_NAME: tanstack_tutorial
-      PORT: 3001
+      PORT: 8080
       CORS_ORIGIN: 'http://localhost:3000'
     ports:
-      - "3001:3001"
+      - "8080:8080"
     depends_on:
       mysql:
         condition: service_healthy
@@ -50,7 +50,7 @@ services:
     container_name: tanstack-frontend
     restart: always
     environment:
-      NEXT_PUBLIC_API_URL: 'http://localhost:3001/api'
+      NEXT_PUBLIC_API_URL: 'http://localhost:8080/api'
     ports:
       - "3000:3000"
     depends_on:
