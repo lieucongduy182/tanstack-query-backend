@@ -16,7 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
         logging: true,
-        socketPath: configService.get<string>('DB_HOST'),
+        extra: {
+          socketPath: configService.get<string>('DB_HOST'),
+        }
       }),
     }),
   ],
