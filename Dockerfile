@@ -27,7 +27,7 @@ COPY --from=builder /app/package*.json ./
 
 USER nestjs
 
-EXPOSE 3001
-ENV PORT=3001
+EXPOSE 8080
+ENV PORT=8080
 
 CMD [ "node", "dist/main" ]
