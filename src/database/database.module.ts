@@ -7,19 +7,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: true,
-        logging: true,
-        extra: {
-          socketPath: configService.get<string>('DB_HOST'),
-        }
-      }),
+      useFactory: (configService: ConfigService) => {
+        const dbHost = configService.get<string>('DB_HOST');
+        const isSocketConnection = dbHost?.startsWith('/cloudsql/');
+        return {
+          type: 'mysql',
+          port: configService.get<number>('DB_PORT'),
+          username: configService.get<string>('DB_USERNAME'),
+          password: configService.get<string>('DB_PASSWORD'),
+          database: configService.get<string>('DB_DATABASE'),
+          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          synchronize: true,
+          logging: true,
+          ...(isSocketConnection
+            ? {
+                extra: {
+                  socketPath: dbHost,
+                },
+              }
+            : {
+                host: dbHost,
+                port: configService.get<number>('DB_PORT'),
+              }),
+        };
+      },
     }),
   ],
 })
