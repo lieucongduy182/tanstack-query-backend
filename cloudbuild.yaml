@@ -1,4 +1,14 @@
 steps:
+  - id: 'install-proxy'
+    name: 'gcr.io/cloud-builders/wget'
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        wget -O /workspace/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/2.18.2
+        chmod +x /workspace/cloud-sql-proxy
+        /workspace/cloud-sql-proxy -instances=${_CLOUDSQL_INSTANCE} --port=3306 & sleep 2;
+  
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -20,6 +30,7 @@ steps:
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    waitFor: ['install-proxy']
     entrypoint: 'gcloud'
     args:
       - 'run'
