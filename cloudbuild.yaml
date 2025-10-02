@@ -46,7 +46,7 @@ steps:
       - '10'
       - '--set-cloudsql-instances'
       - '${_CLOUDSQL_INSTANCE}' 
-      - '--set-env-vars-file'
+      - '--env-vars-file'
       - '.env.cloudbuild.yaml'
       - '--quiet'
     timeout: 600s
