@@ -2,8 +2,12 @@ node_modules
 dist
 .git
 .gitignore
-*.md
 .env
-.env.local
+.env.*
+*.md
+README.md
 .vscode
 .idea
+coverage
+.nyc_output
+test

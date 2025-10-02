@@ -5,8 +5,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const allowOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',')
+    : ['http://localhost:3000'];
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: allowOrigins,
     credentials: true,
   });
 
@@ -21,21 +26,25 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   // Swagger setup
-  const config = new DocumentBuilder()
-    .setTitle('Tanstack Query Tutorial API')
-    .setDescription('Backend API for Tanstack Query Tutorial')
-    .setVersion('1.0')
-    .addTag('posts')
-    .addTag('users')
-    .addTag('todos')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  if (process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Tanstack Query Tutorial API')
+      .setDescription('Backend API for Tanstack Query Tutorial')
+      .setVersion('1.0')
+      .addTag('posts')
+      .addTag('users')
+      .addTag('todos')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document);
+  }
 
   const port = process.env.PORT ?? 3001;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 
   console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);
+  }
 }
 bootstrap();
