@@ -19,7 +19,8 @@ steps:
       - '.'
     timeout: 600s
 
-  - name: 'gcr.io/cloud-builders/docker'
+  - id: 'docker-push'
+    name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
@@ -30,7 +31,7 @@ steps:
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    waitFor: ['install-proxy']
+    waitFor: ['install-proxy','docker-push']
     entrypoint: 'gcloud'
     args:
       - 'run'
