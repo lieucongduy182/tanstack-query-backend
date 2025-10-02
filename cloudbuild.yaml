@@ -5,7 +5,7 @@ steps:
     args:
       - -c
       - |
-        wget -O /workspace/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/2.18.2
+        wget -O /workspace/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.2/cloud-sql-proxy.linux.amd64
         chmod +x /workspace/cloud-sql-proxy
         /workspace/cloud-sql-proxy -instances=${_CLOUDSQL_INSTANCE} --port=3306 & sleep 2;
   
