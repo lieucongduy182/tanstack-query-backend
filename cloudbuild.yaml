@@ -13,13 +13,11 @@ steps:
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
-    timeout: 600s
 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
-    timeout: 600s
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
@@ -47,7 +45,6 @@ steps:
       - '--env-vars-file'
       - '.env.cloudbuild.yaml'
       - '--quiet'
-    timeout: 600s
 
 images:
   - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
