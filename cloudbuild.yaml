@@ -34,8 +34,6 @@ steps:
       - '--region'
       - 'us-central1'
       - '--allow-unauthenticated'
-      - '--port'
-      - '8080'
       - '--memory'
       - '512Mi'
       - '--cpu'
