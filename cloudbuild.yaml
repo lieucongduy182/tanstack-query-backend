@@ -1,5 +1,5 @@
 steps:
-  - name: 'Build the Docker images'
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
@@ -8,19 +8,19 @@ steps:
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
     timeout: 600s
 
-  - name: 'Push the Docker images to Google Container Registry'
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
     timeout: 600s
 
-  - name: 'Push the latest Docker image to Google Container Registry'
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
     timeout: 600s
 
-  - name: 'Deploy to Cloud Run'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       - 'run'
