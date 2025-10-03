@@ -31,7 +31,7 @@ steps:
       - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    waitFor: ['install-proxy','docker-push']
+    # waitFor: ['install-proxy','docker-push']
     entrypoint: 'gcloud'
     args:
       - 'run'
