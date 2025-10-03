@@ -1,23 +1,23 @@
 steps:
-  - id: 'install-proxy'
-    name: 'gcr.io/cloud-builders/wget'
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        wget -O /workspace/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.2/cloud-sql-proxy.linux.amd64
-        chmod +x /workspace/cloud-sql-proxy
-        /workspace/cloud-sql-proxy --unix-socket /cloudsql ${_CLOUDSQL_INSTANCE} & sleep 2;
+  # - id: 'install-proxy'
+  #   name: 'gcr.io/cloud-builders/wget'
+  #   entrypoint: sh
+  #   args:
+  #     - -c
+  #     - |
+  #       wget -O /workspace/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.2/cloud-sql-proxy.linux.amd64
+  #       chmod +x /workspace/cloud-sql-proxy
+  #       /workspace/cloud-sql-proxy --unix-socket /cloudsql ${_CLOUDSQL_INSTANCE} & sleep 2;
   
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
-      - '.'
-    timeout: 600s
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args:
+  #     - 'build'
+  #     - '-t'
+  #     - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
+  #     - '-t'
+  #     - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
+  #     - '.'
+  #   timeout: 600s
 
   - id: 'docker-push'
     name: 'gcr.io/cloud-builders/docker'
@@ -52,7 +52,7 @@ steps:
       - '0'
       - '--max-instances'
       - '10'
-      - '--set-cloudsql-instances'
+      - '--add-cloudsql-instances'
       - '${_CLOUDSQL_INSTANCE}' 
       - '--env-vars-file'
       - '.env.cloudbuild.yaml'
