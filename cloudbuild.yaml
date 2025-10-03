@@ -9,15 +9,15 @@ steps:
   #       chmod +x /workspace/cloud-sql-proxy
   #       /workspace/cloud-sql-proxy --unix-socket /cloudsql ${_CLOUDSQL_INSTANCE} & sleep 2;
   
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   args:
-  #     - 'build'
-  #     - '-t'
-  #     - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
-  #     - '-t'
-  #     - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
-  #     - '.'
-  #   timeout: 600s
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/tanstack-query-backend:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/tanstack-query-backend:latest'
+      - '.'
+    timeout: 600s
 
   - id: 'docker-push'
     name: 'gcr.io/cloud-builders/docker'
