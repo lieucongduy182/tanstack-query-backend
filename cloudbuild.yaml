@@ -64,10 +64,6 @@ images:
 
 substitutions:
   _CLOUDSQL_INSTANCE: 'next-tanstack-tutorial:us-central1:tanstack-mysql'
-  _DB_USERNAME: 'tanstack_user'
-  _DB_PASSWORD: 'Password@123'
-  _DB_DATABASE: 'tanstack_tutorial'
-  _CORS_ORIGIN: 'http://localhost:3000,https://next-tanstack-tutorial-671700735467.us-central1.run.app'
 
 options:
   machineType: 'E2_HIGHCPU_8'
